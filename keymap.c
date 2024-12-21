@@ -14,6 +14,7 @@ enum CUSTOM_KEYCODES  {
 };
 
 
+bool windows_key_disabled = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -131,22 +132,27 @@ const char *read_keylogs(void);
 // const char *read_timelog(void);
 
 bool oled_task_user(void) {
-  if (is_keyboard_master()) {
-    // If you want to change the display of OLED, you need to change here
-    oled_write_ln(read_layer_state(), false);
-    oled_write_ln(read_keylog(), false);
-    oled_write_ln(read_keylogs(), false);
-    //oled_write_ln(read_mode_icon(keymap_config.swap_lalt_lgui), false);
-    //oled_write_ln(read_host_led_state(), false);
-    //oled_write_ln(read_timelog(), false);
-  } else {
+  // if (is_keyboard_master()) {
+  //   // If you want to change the display of OLED, you need to change here
+  //   oled_write_ln(read_layer_state(), false);
+  //   oled_write_ln(read_keylog(), false);
+  //   oled_write_ln(read_keylogs(), false);
+  //   //oled_write_ln(read_mode_icon(keymap_config.swap_lalt_lgui), false);
+  //   //oled_write_ln(read_host_led_state(), false);
+  //   //oled_write_ln(read_timelog(), false);
+  // } else {
     oled_write(read_logo(), false);
-  }
+
+    if (windows_key_disabled){
+      oled_write_ln("[WIN]:LOCKED", false);
+    }else {
+      oled_write_ln("[WIN]:FREE", false);
+    }
+//}
     return false;
 }
 #endif // OLED_ENABLE
 
-bool windows_key_disabled = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
