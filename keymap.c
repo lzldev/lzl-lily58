@@ -1,3 +1,4 @@
+#include "config.h"
 #include QMK_KEYBOARD_H
 
 enum layer_number {
@@ -6,6 +7,13 @@ enum layer_number {
   _RAISE,
   _ADJUST,
 };
+
+
+enum CUSTOM_KEYCODES  {
+    WIN_LOCK = SAFE_RANGE,
+};
+
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -50,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                     _______,   _______,   _______,   _______,  _______,  _______,
   _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                   _______, _______, _______, _______, _______, _______,
   _______, _______, _______, KC_MPLY, KC_VOLD, KC_VOLU, _______, _______, _______, _______, _______, _______, _______, _______,
-                             _______, _______, _______, _______, _______,  _______, _______, _______
+                             _______, WIN_LOCK, _______, _______, _______,  _______, _______, _______
 ),
 /* RAISE
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -138,12 +146,28 @@ bool oled_task_user(void) {
 }
 #endif // OLED_ENABLE
 
+bool windows_key_disabled = false;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (record->event.pressed) {
+    if (record->event.pressed) {
 #ifdef OLED_ENABLE
-    set_keylog(keycode, record);
+        set_keylog(keycode, record);
 #endif
-    // set_timelog();
-  }
-  return true;
+        // set_timelog();
+    }
+
+    switch (keycode) {
+        case WIN_LOCK:
+            if (record->event.pressed) {
+                windows_key_disabled = !windows_key_disabled;
+            }
+
+            return false;
+        default:
+            if (windows_key_disabled && (keycode == KC_LGUI || keycode == KC_RGUI)) {
+                return false;
+            }
+            return true;
+    }
+
 }
