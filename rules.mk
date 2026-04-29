@@ -9,7 +9,9 @@ BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality
 AUDIO_ENABLE = no           # Audio output
 RGBLIGHT_ENABLE = no        # Enable WS2812 RGB underlight.
 SWAP_HANDS_ENABLE = no      # Enable one-hand typing
-OLED_ENABLE = yes           # OLED display
+OLED_ENABLE = no           # OLED display
+
+DEBOUNCE_TYPE = sym_eager_pk
 
 # If you want to change the display of OLED, you need to change here
 SRC +=  ./lib/rgb_state_reader.c \
