@@ -1,3 +1,18 @@
+// This is the 'classic' fixed-space bitmap font for Adafruit_GFX since 1.0.
+// See gfxfont.h for newer custom bitmap font info.
+
+#ifndef FONT5X7_H
+#define FONT5X7_H
+
+#ifdef __AVR__
+ #include <avr/io.h>
+ #include <avr/pgmspace.h>
+#elif defined(ESP8266)
+ #include <pgmspace.h>
+#else
+ #define PROGMEM
+#endif
+
 static const unsigned char PROGMEM font[] = {
     0x07, 0x08, 0x7F, 0x08, 0x07, 0x00,
     0x3E, 0x5B, 0x4F, 0x5B, 0x3E, 0x00,
@@ -224,3 +239,4 @@ static const unsigned char PROGMEM font[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
+#endif // FONT5X7_H
